@@ -8,6 +8,7 @@
 
 # Any kinf of stuff
 .idea/
+*.iml
 
 # User-specific stuff
 .idea/**/workspace.xml

@@ -350,13 +350,144 @@ public class JavaAlgs {
 
     }
 
-    void  multiBinary() {
+    class PriorQueue {
+        ArrayList<Integer> q = new ArrayList<>();
+
+        private void siftDown() {
+            if (q.isEmpty()) {
+                return;
+            }
+
+            boolean inPlace = false;
+
+            boolean hasLeft;
+            boolean hasRight;
+
+            int curInd = 0;
+
+            int curTemp;
+            int lChildTemp;
+            int rChildTemp;
+
+            while (!inPlace) {
+                hasLeft = curInd * 2 + 1 < q.size();
+                hasRight = curInd * 2 + 2 < q.size();
+
+                curTemp = q.get(curInd);
+
+                if (hasRight) {
+                    lChildTemp = q.get(curInd * 2 + 1);
+                    rChildTemp = q.get(curInd * 2 + 2);
+
+                    if (curTemp < lChildTemp || curTemp < rChildTemp) {
+                        if (lChildTemp > rChildTemp) {
+                            q.set(curInd, lChildTemp);
+                            q.set(curInd * 2 + 1, curTemp);
+                            curInd = curInd * 2 + 1;
+                        } else {
+                            q.set(curInd, rChildTemp);
+                            q.set(curInd * 2 + 2, curTemp);
+                            curInd = curInd * 2 + 2;
+                        }
+                    } else {
+                        inPlace = true;
+                    }
+                } else if (hasLeft) {
+                    lChildTemp = q.get(curInd * 2 + 1);
+                    if (curTemp < lChildTemp) {
+                        q.set(curInd, lChildTemp);
+                        q.set(curInd * 2 + 1, curTemp);
+                        curInd = curInd * 2 + 1;
+                    } else {
+                        inPlace = true;
+                    }
+                } else {
+                    inPlace = true;
+                }
+            }
+        }
+
+        public void printQueue() {
+            q.forEach(elem -> System.out.print(elem + " "));
+        }
+
+        private void siftUp() {
+            boolean inPlace = false;
+            int curInd = q.size() - 1;
+
+            int curTemp;
+            int parentTemp;
+
+            while (curInd > 0 && !inPlace) {
+
+                curTemp = q.get(curInd);
+                parentTemp = q.get((curInd - 1) / 2);
+
+                if (curTemp > parentTemp) {
+
+                    q.set(curInd, parentTemp);
+                    q.set((curInd - 1) / 2, curTemp);
+
+                    curInd = (curInd - 1) / 2;
+                } else {
+                    inPlace = true;
+                }
+            }
+
+        }
+
+        public void push(int elem) {
+            q.add(elem);
+            siftUp();
+
+            System.out.println();
+            printQueue();
+            System.out.println();
+        }
+
+        public void poll() {
+            if (!q.isEmpty()) {
+                System.out.println(q.get(0));
+                q.set(0, q.get(q.size() - 1));
+                q.remove(q.size() - 1);
+
+                siftDown();
+            }
+            System.out.println();
+            printQueue();
+            System.out.println();
+        }
+    }
+
+    void priorityQueue() {
+        PriorQueue pq = new PriorQueue();
+
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        String command;
+        String[] parsed;
+
+
+        for (int i = 0; i < n; ++i) {
+            command = sc.nextLine();
+            parsed = command.split(" ");
+
+            if (parsed.length == 1) {
+                pq.poll();
+            } else {
+                pq.push(Integer.valueOf(parsed[1]));
+            }
+        }
+    }
+
+    void multiBinary() {
 
     }
 
     private long unsortedCount = 0;
-    private int [] temp;
-    private int [] a;
+    private int[] temp;
+    private int[] a;
 
     void merge(int left, int m, int right) {
         if (left >= right) return;
@@ -414,7 +545,8 @@ public class JavaAlgs {
 //        algs.continuousKnapsack();
 //        algs.naturalDecomposition();
 //        algs.huffman();
-        algs.huffmanDecode();
+//        algs.huffmanDecode();
 //        algs.unsortedPairs();
+        algs.priorityQueue();
     }
 }
